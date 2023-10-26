@@ -63,6 +63,12 @@ module.exports = {
             template: path.resolve(__dirname, 'public/index.html')
         })
     ],
+    //开发服务器：不会输出资源，在内存中编译打包
+    devServer: {
+        host: "localhost",//服务器域名
+        port: 9000, //服务器端口号
+        open: true //自动打开浏览器
+    },
     mode: 'development'
 
 }
