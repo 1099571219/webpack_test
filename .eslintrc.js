@@ -1,3 +1,5 @@
+console.log('load eslint')
+
 module.exports = {
     //解析选项
     parserOptions: {
@@ -9,7 +11,7 @@ module.exports = {
     },
     //检查规则 优先级最高 0:off 1:warn 2:error
     rules: {
-        nosemi: "off", // 禁止使用分号
+        semi: [2, "never"], // 禁止使用分号
         "array-callback-return": 1, // 强制数组方法的回调函数中有 return 语句，否则警告
         "default-case": [
             1, // 要求 switch 语句中有 default 分支，否则警告

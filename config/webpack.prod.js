@@ -5,7 +5,7 @@ module.exports = {
     //入口文件
     entry: "./src/main.js",//相对路径
     output: {
-        path: path.resolve(__dirname, 'dist'),//绝对路径
+        path: path.resolve(__dirname, '../dist'),//绝对路径
         //入口文件打包输出文件名
         filename: 'static/main.js',
         clean: true //自动清理 path 目录后再进行打包
@@ -46,14 +46,14 @@ module.exports = {
                     filename: "static/media/[hash:10][ext][query]"
                 }
             },
-            // {
-            //     test: /\.js$/,
-            //     exclude: /node_modules/, // 排除 node_modules 中的 js 文件
-            //     loader: "babel-loader",
-            //     // options: {
-            //     //     presets: ["@babel/preset-env"]
-            //     // }
-            // }
+            {
+                test: /\.js$/,
+                exclude: /node_modules/, // 排除 node_modules 中的 js 文件
+                loader: "babel-loader",
+                // options: {
+                //     presets: ["@babel/preset-env"]
+                // }
+            }
         ]
     },
     plugins: [
@@ -61,20 +61,13 @@ module.exports = {
         //plugin 配置
         new ESLintPlugin({
             //检查文件
-            context: path.resolve(__dirname, "src")
+            context: path.resolve(__dirname, "../src")
         }),
         new HtmlWebpackPlugin({
             //以 template 为模板创建新的 html 文件
             //新的 html 文件特点：和模板结构一直，自动引入打包输出的资源
-            template: path.resolve(__dirname, 'public/index.html')
+            template: path.resolve(__dirname, '../public/index.html')
         })
     ],
-    //开发服务器：不会输出资源，在内存中编译打包
-    devServer: {
-        host: "localhost",//服务器域名
-        port: 9000, //服务器端口号
-        open: true //自动打开浏览器
-    },
-    mode: 'development'
-
+    mode: 'production'
 }
