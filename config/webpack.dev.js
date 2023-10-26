@@ -1,6 +1,6 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ESLintPlugin = require('eslint-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin')
 module.exports = {
     //入口文件
     entry: "./src/main.js",//相对路径
@@ -19,6 +19,23 @@ module.exports = {
                     //执行顺序，从右到左（从下到上）
                     "style-loader", // 将 js 中的 css 通过创建 style 标签添加到 html 文件中生效
                     "css-loader" // 将 css 资源编译成 commonjs 模块到 js 中
+                ]
+            },
+            {
+                test: /\.s[ac]ss$/,
+                use: [
+                    "style-loader",
+                    "css-loader",
+                    "sass-loader", // 将 sass 编译成 css 文件
+                ]
+            },
+            ,
+            {
+                test: /\.less$/,
+                use: [
+                    "style-loader",
+                    "css-loader",
+                    "less-loader",
                 ]
             },
             {

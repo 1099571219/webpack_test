@@ -1,13 +1,15 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ESLintPlugin = require('eslint-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin')
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+
 module.exports = {
     //入口文件
     entry: "./src/main.js",//相对路径
     output: {
         path: path.resolve(__dirname, '../dist'),//绝对路径
         //入口文件打包输出文件名
-        filename: 'static/main.js',
+        filename: 'static/js/main.js',
         clean: true //自动清理 path 目录后再进行打包
     },
     module: {
@@ -17,8 +19,27 @@ module.exports = {
                 test: /\.css$/,//检测的文件
                 use: [
                     //执行顺序，从右到左（从下到上）
-                    "style-loader", // 将 js 中的 css 通过创建 style 标签添加到 html 文件中生效
+                    MiniCssExtractPlugin.loader,
                     "css-loader" // 将 css 资源编译成 commonjs 模块到 js 中
+                ]
+            },
+            {
+                test: /\.s[ac]ss$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    // "style-loader",
+                    "css-loader",
+                    "sass-loader", // 将 sass 编译成 css 文件
+                ]
+            },
+            ,
+            {
+                test: /\.less$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    // "style-loader",
+                    "css-loader",
+                    "less-loader",
                 ]
             },
             {
@@ -67,6 +88,9 @@ module.exports = {
             //以 template 为模板创建新的 html 文件
             //新的 html 文件特点：和模板结构一直，自动引入打包输出的资源
             template: path.resolve(__dirname, '../public/index.html')
+        }),
+        new MiniCssExtractPlugin({
+            filename: "static/css/main.css"
         })
     ],
     mode: 'production'
