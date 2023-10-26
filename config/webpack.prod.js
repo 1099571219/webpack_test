@@ -3,6 +3,31 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 
+const getStyleLoader = (pre) => {
+    return [
+        //执行顺序，从右到左（从下到上）
+        MiniCssExtractPlugin.loader,
+        "css-loader", // 将 css 资源编译成 commonjs 模块到 js 中
+        {
+            loader: 'postcss-loader',
+            options: {
+                postcssOptions: {
+                    plugins: [
+                        [
+                            'postcss-preset-env',
+                            {
+                                // 其他选项
+                            },
+                        ],
+                    ],
+                },
+            }
+        },
+        pre
+    ].filter(Boolean)
+
+}
+
 module.exports = {
     //入口文件
     entry: "./src/main.js",//相对路径
@@ -17,75 +42,23 @@ module.exports = {
             //loader的配置
             {
                 test: /\.css$/,//检测的文件
-                use: [
-                    //执行顺序，从右到左（从下到上）
-                    MiniCssExtractPlugin.loader,
-                    "css-loader", // 将 css 资源编译成 commonjs 模块到 js 中
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            postcssOptions: {
-                                plugins: [
-                                    [
-                                        'postcss-preset-env',
-                                        {
-                                            // 其他选项
-                                        },
-                                    ],
-                                ],
-                            },
-                        }
-                    }
-                ]
+                use: getStyleLoader()
             },
             {
                 test: /\.s[ac]ss$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    // "style-loader",
-                    "css-loader",
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            postcssOptions: {
-                                plugins: [
-                                    [
-                                        'postcss-preset-env',
-                                        {
-                                            // 其他选项
-                                        },
-                                    ],
-                                ],
-                            },
-                        }
-                    },
-                    "sass-loader", // 将 sass 编译成 css 文件
-                ]
+                use: getStyleLoader("sass-loader")
+                // use: [
+                //     MiniCssExtractPlugin.loader,
+                //     // "style-loader",
+                //     "css-loader",
+                //     getStyleLoader(),
+                //     "sass-loader", // 将 sass 编译成 css 文件
+                // ]
             },
             ,
             {
                 test: /\.less$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    // "style-loader",
-                    "css-loader",
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            postcssOptions: {
-                                plugins: [
-                                    [
-                                        'postcss-preset-env',
-                                        {
-                                            // 其他选项
-                                        },
-                                    ],
-                                ],
-                            },
-                        }
-                    },
-                    "less-loader",
-                ]
+                use: getStyleLoader("less-loader")
             },
             {
                 test: /\.(png|jpe?g|gif|webp|svg)$/,
