@@ -1,5 +1,6 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ESLintPlugin = require('eslint-webpack-plugin');
 module.exports = {
     //入口文件
     entry: "./src/main.js",//相对路径
@@ -57,6 +58,11 @@ module.exports = {
     },
     plugins: [
         //插件配置
+        //plugin 配置
+        new ESLintPlugin({
+            //检查文件
+            context: path.resolve(__dirname, "src")
+        }),
         new HtmlWebpackPlugin({
             //以 template 为模板创建新的 html 文件
             //新的 html 文件特点：和模板结构一直，自动引入打包输出的资源
