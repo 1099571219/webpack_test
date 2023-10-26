@@ -20,7 +20,22 @@ module.exports = {
                 use: [
                     //执行顺序，从右到左（从下到上）
                     MiniCssExtractPlugin.loader,
-                    "css-loader" // 将 css 资源编译成 commonjs 模块到 js 中
+                    "css-loader", // 将 css 资源编译成 commonjs 模块到 js 中
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            postcssOptions: {
+                                plugins: [
+                                    [
+                                        'postcss-preset-env',
+                                        {
+                                            // 其他选项
+                                        },
+                                    ],
+                                ],
+                            },
+                        }
+                    }
                 ]
             },
             {
@@ -29,6 +44,21 @@ module.exports = {
                     MiniCssExtractPlugin.loader,
                     // "style-loader",
                     "css-loader",
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            postcssOptions: {
+                                plugins: [
+                                    [
+                                        'postcss-preset-env',
+                                        {
+                                            // 其他选项
+                                        },
+                                    ],
+                                ],
+                            },
+                        }
+                    },
                     "sass-loader", // 将 sass 编译成 css 文件
                 ]
             },
@@ -39,6 +69,21 @@ module.exports = {
                     MiniCssExtractPlugin.loader,
                     // "style-loader",
                     "css-loader",
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            postcssOptions: {
+                                plugins: [
+                                    [
+                                        'postcss-preset-env',
+                                        {
+                                            // 其他选项
+                                        },
+                                    ],
+                                ],
+                            },
+                        }
+                    },
                     "less-loader",
                 ]
             },
