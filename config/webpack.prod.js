@@ -36,7 +36,9 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, '../dist'),//绝对路径
         //入口文件打包输出文件名
-        filename: 'static/js/[name].js',
+        filename: 'static/js/[name].[contenthash:8].js',
+        //打包输出的动态文件命名
+        chunkFilename: 'static/js/[name].[contenthash:8].js',
         clean: true //自动清理 path 目录后再进行打包
     },
     module: {
@@ -138,7 +140,18 @@ module.exports = {
             new TerserPlugin()
         ],
         splitChunks: {
-            chunks: "all"
+            chunks: "all",
+            cacheGroups: {
+                default: {
+                    minChunks: 1,
+                    minSize: 1,
+                }
+            }
+        },
+        runtimeChunk: {
+            name: (entrypoint) => {
+                return `runtime=${entrypoint.name}.js`
+            }
         }
     },
     mode: 'production',
