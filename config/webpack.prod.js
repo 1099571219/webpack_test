@@ -98,7 +98,8 @@ module.exports = {
                                 loader: "babel-loader",
                                 options: {
                                     cacheDirectory: true, //开启 babel 缓存
-                                    cacheCompression: false //关闭保存文件压缩
+                                    cacheCompression: false, //关闭保存文件压缩
+                                    plugins: ["@babel/plugin-transform-runtime"]
                                     //     presets: ["@babel/preset-env"]
                                 }
                             }
