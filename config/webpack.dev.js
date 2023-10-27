@@ -92,6 +92,8 @@ module.exports = {
         port: 9000, //服务器端口号
         open: true //自动打开浏览器
     },
-    mode: 'development'
+    mode: 'development',
+    devtool: 'cheap-module-source-map'
+
 
 }
