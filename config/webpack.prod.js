@@ -9,7 +9,7 @@ const getStyleLoader = (pre) => {
         MiniCssExtractPlugin.loader,
         "css-loader", // 将 css 资源编译成 commonjs 模块到 js 中
         {
-            loader: 'postcss-loader',
+            loader: 'postcss-loader', //浏览器兼容性优化
             options: {
                 postcssOptions: {
                     plugins: [
@@ -41,57 +41,55 @@ module.exports = {
         rules: [
             //loader的配置
             {
-                test: /\.css$/,//检测的文件
-                use: getStyleLoader()
-            },
-            {
-                test: /\.s[ac]ss$/,
-                use: getStyleLoader("sass-loader")
-                // use: [
-                //     MiniCssExtractPlugin.loader,
-                //     // "style-loader",
-                //     "css-loader",
-                //     getStyleLoader(),
-                //     "sass-loader", // 将 sass 编译成 css 文件
-                // ]
-            },
-            ,
-            {
-                test: /\.less$/,
-                use: getStyleLoader("less-loader")
-            },
-            {
-                test: /\.(png|jpe?g|gif|webp|svg)$/,
-                type: "asset",// asset 通过配置 parser 限制，自动选择转换 Data URI 或发送单独文件至出口目录
-                parser: {
-                    dataUrlCondition: {
-                        //小于 10kb 的图片转 base64
-                        // 优点：减少请求数量 缺点：体积更大
-                        maxSize: 10 * 1024
+                //每个文件只能被其中一个 loader 配置处理 类似 if(){}else()
+                oneOf: [
+                    {
+                        test: /\.css$/,//检测的文件
+                        use: getStyleLoader()
+                    },
+                    {
+                        test: /\.s[ac]ss$/,
+                        use: getStyleLoader("sass-loader")
+                    },
+                    ,
+                    {
+                        test: /\.less$/,
+                        use: getStyleLoader("less-loader")
+                    },
+                    {
+                        test: /\.(png|jpe?g|gif|webp|svg)$/,
+                        type: "asset",// asset 通过配置 parser 限制，自动选择转换 Data URI 或发送单独文件至出口目录
+                        parser: {
+                            dataUrlCondition: {
+                                //小于 10kb 的图片转 base64
+                                // 优点：减少请求数量 缺点：体积更大
+                                maxSize: 10 * 1024
+                            }
+                        },
+                        generator: {
+                            //输出名称
+                            // [hash:10] hash值取前10位
+                            //ext 文件扩展名
+                            //query ?跟的参数
+                            filename: "static/images/[hash:10][ext][query]"
+                        }
+                    },
+                    {
+                        test: /\.(ttf|woff2?|mp3|mp4|avi)$/,
+                        type: "asset/resource",
+                        generator: {
+                            filename: "static/media/[hash:10][ext][query]"
+                        }
+                    },
+                    {
+                        test: /\.js$/,
+                        exclude: /node_modules/, // 排除 node_modules 中的 js 文件
+                        loader: "babel-loader",
+                        // options: {
+                        //     presets: ["@babel/preset-env"]
+                        // }
                     }
-                },
-                generator: {
-                    //输出名称
-                    // [hash:10] hash值取前10位
-                    //ext 文件扩展名
-                    //query ?跟的参数
-                    filename: "static/images/[hash:10][ext][query]"
-                }
-            },
-            {
-                test: /\.(ttf|woff2?|mp3|mp4|avi)$/,
-                type: "asset/resource",
-                generator: {
-                    filename: "static/media/[hash:10][ext][query]"
-                }
-            },
-            {
-                test: /\.js$/,
-                exclude: /node_modules/, // 排除 node_modules 中的 js 文件
-                loader: "babel-loader",
-                // options: {
-                //     presets: ["@babel/preset-env"]
-                // }
+                ]
             }
         ]
     },
