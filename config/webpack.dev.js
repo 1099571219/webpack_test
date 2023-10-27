@@ -1,6 +1,15 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
+const getStyleLoader = (pre) => {
+    return [
+        //执行顺序，从右到左（从下到上）
+        "style-loader",// 将 js 中的 css 通过创建 style 标签添加到 html 文件中生效
+        "css-loader", // 将 css 资源编译成 commonjs 模块到 js 中
+        pre
+    ].filter(Boolean)
+
+}
 module.exports = {
     //入口文件
     entry: "./src/main.js",//相对路径
@@ -14,62 +23,54 @@ module.exports = {
         rules: [
             //loader的配置
             {
-                test: /\.css$/,//检测的文件
-                use: [
-                    //执行顺序，从右到左（从下到上）
-                    "style-loader", // 将 js 中的 css 通过创建 style 标签添加到 html 文件中生效
-                    "css-loader" // 将 css 资源编译成 commonjs 模块到 js 中
-                ]
-            },
-            {
-                test: /\.s[ac]ss$/,
-                use: [
-                    "style-loader",
-                    "css-loader",
-                    "sass-loader", // 将 sass 编译成 css 文件
-                ]
-            },
-            ,
-            {
-                test: /\.less$/,
-                use: [
-                    "style-loader",
-                    "css-loader",
-                    "less-loader",
-                ]
-            },
-            {
-                test: /\.(png|jpe?g|gif|webp|svg)$/,
-                type: "asset",// asset 通过配置 parser 限制，自动选择转换 Data URI 或发送单独文件至出口目录
-                parser: {
-                    dataUrlCondition: {
-                        //小于 10kb 的图片转 base64
-                        // 优点：减少请求数量 缺点：体积更大
-                        maxSize: 10 * 1024
+                oneOf: [
+                    {
+                        test: /\.css$/,//检测的文件
+                        use: getStyleLoader()
+                    },
+                    {
+                        test: /\.s[ac]ss$/,
+                        use: getStyleLoader("sass-loader")// 将 sass 编译成 css 文件
+                    },
+                    {
+                        test: /\.less$/,
+                        use: getStyleLoader("less-loader")
+                    },
+                    {
+                        test: /\.(png|jpe?g|gif|webp|svg)$/,
+                        type: "asset",// asset 通过配置 parser 限制，自动选择转换 Data URI 或发送单独文件至出口目录
+                        parser: {
+                            dataUrlCondition: {
+                                //小于 10kb 的图片转 base64
+                                // 优点：减少请求数量 缺点：体积更大
+                                maxSize: 10 * 1024
+                            }
+                        },
+                        generator: {
+                            //输出名称
+                            // [hash:10] hash值取前10位
+                            //ext 文件扩展名
+                            //query ?跟的参数
+                            filename: "static/images/[hash:10][ext][query]"
+                        }
+                    },
+                    {
+                        test: /\.(ttf|woff2?|mp3|mp4|avi)$/,
+                        type: "asset/resource",
+                        generator: {
+                            filename: "static/media/[hash:10][ext][query]"
+                        }
+                    },
+                    {
+                        test: /\.js$/,
+                        // exclude: /node_modules/, // 排除 node_modules 中的 js 文件
+                        include: path.resolve(__dirname, "../src"),
+                        loader: "babel-loader",
+                        // options: {
+                        //     presets: ["@babel/preset-env"]
+                        // }
                     }
-                },
-                generator: {
-                    //输出名称
-                    // [hash:10] hash值取前10位
-                    //ext 文件扩展名
-                    //query ?跟的参数
-                    filename: "static/images/[hash:10][ext][query]"
-                }
-            },
-            {
-                test: /\.(ttf|woff2?|mp3|mp4|avi)$/,
-                type: "asset/resource",
-                generator: {
-                    filename: "static/media/[hash:10][ext][query]"
-                }
-            },
-            {
-                test: /\.js$/,
-                exclude: /node_modules/, // 排除 node_modules 中的 js 文件
-                loader: "babel-loader",
-                // options: {
-                //     presets: ["@babel/preset-env"]
-                // }
+                ]
             }
         ]
     },
@@ -78,7 +79,8 @@ module.exports = {
         //plugin 配置
         new ESLintPlugin({
             //检查文件
-            context: path.resolve(__dirname, "../src")
+            context: path.resolve(__dirname, "../src"),
+            exclude: "node_modules" //默认值
         }),
         new HtmlWebpackPlugin({
             //以 template 为模板创建新的 html 文件
