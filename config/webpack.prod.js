@@ -128,7 +128,7 @@ module.exports = {
             template: path.resolve(__dirname, '../public/index.html')
         }),
         new MiniCssExtractPlugin({
-            filename: "static/css/[name].css"
+            filename: "static/css/[name].[contenthash].css"
         }),
     ],
     optimization: {
