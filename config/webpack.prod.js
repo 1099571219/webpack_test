@@ -1,3 +1,5 @@
+const os = require('os')
+const TerserPlugin = require("terser-webpack-plugin");
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
@@ -27,7 +29,7 @@ const getStyleLoader = (pre) => {
     ].filter(Boolean)
 
 }
-
+const threads = os.cpus().length - 1
 module.exports = {
     //入口文件
     entry: "./src/main.js",//相对路径
@@ -85,12 +87,22 @@ module.exports = {
                         test: /\.js$/,
                         // exclude: /node_modules/, // 排除 node_modules 中的 js 文件
                         include: path.resolve(__dirname, "../src"),
-                        loader: "babel-loader",
-                        options: {
-                            cacheDirectory: true, //开启 babel 缓存
-                            cacheCompression: false //关闭保存文件压缩
-                            //     presets: ["@babel/preset-env"]
-                        }
+                        use: [
+                            {
+                                loader: "thread-loader",
+                                options: {
+                                    workers: threads
+                                }
+                            },
+                            {
+                                loader: "babel-loader",
+                                options: {
+                                    cacheDirectory: true, //开启 babel 缓存
+                                    cacheCompression: false //关闭保存文件压缩
+                                    //     presets: ["@babel/preset-env"]
+                                }
+                            }
+                        ]
                     }
                 ]
             }
@@ -104,6 +116,7 @@ module.exports = {
             context: path.resolve(__dirname, "../src"),
             cache: true,
             cacheLocation: path.resolve(__dirname, "../node_modules/.cache/eslintcache"),
+            threads,
             exclude: "node_modules" //默认值
         }),
         new HtmlWebpackPlugin({
@@ -114,15 +127,16 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: "static/css/main.css"
         }),
-        new CssMinimizerPlugin() // css 文件压缩
     ],
-    // optimization: {
-    //     minimizer: [
-    //         // 在 webpack@5 中，你可以使用 `...` 语法来扩展现有的 minimizer（即 `terser-webpack-plugin`），将下一行取消注释
-    //         // `...`,
-    //         new CssMinimizerPlugin(),
-    //     ],
-    // },
+    optimization: {
+        minimize: true,
+        minimizer: [
+            // 在 webpack@5 中，你可以使用 `...` 语法来扩展现有的 minimizer（即 `terser-webpack-plugin`），将下一行取消注释
+            // `...`,
+            new CssMinimizerPlugin(),// css 文件压缩
+            new TerserPlugin()
+        ],
+    },
     mode: 'production',
     devtool: 'source-map'
 }

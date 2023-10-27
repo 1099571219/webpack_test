@@ -1,3 +1,4 @@
+const os = require('os')
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
@@ -8,8 +9,8 @@ const getStyleLoader = (pre) => {
         "css-loader", // 将 css 资源编译成 commonjs 模块到 js 中
         pre
     ].filter(Boolean)
-
 }
+const threads = os.cpus().length - 1
 module.exports = {
     //入口文件
     entry: "./src/main.js",//相对路径
@@ -65,12 +66,22 @@ module.exports = {
                         test: /\.js$/,
                         // exclude: /node_modules/, // 排除 node_modules 中的 js 文件
                         include: path.resolve(__dirname, "../src"),
-                        loader: "babel-loader",
-                        options: {
-                            cacheDirectory: true, //开启 babel 缓存
-                            cacheCompression: false //关闭保存文件压缩
-                            //     presets: ["@babel/preset-env"]
-                        }
+                        use: [
+                            {
+                                loader: "thread-loader",
+                                options: {
+                                    workers: threads
+                                }
+                            },
+                            {
+                                loader: "babel-loader",
+                                options: {
+                                    cacheDirectory: true, //开启 babel 缓存
+                                    cacheCompression: false //关闭保存文件压缩
+                                    //     presets: ["@babel/preset-env"]
+                                }
+                            }
+                        ]
                     }
                 ]
             }
@@ -84,6 +95,7 @@ module.exports = {
             context: path.resolve(__dirname, "../src"),
             cache: true,
             cacheLocation: path.resolve(__dirname, "../node_modules/.cache/eslintcache"),
+            threads,
             exclude: "node_modules" //默认值
         }),
         new HtmlWebpackPlugin({
