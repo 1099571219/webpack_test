@@ -66,9 +66,11 @@ module.exports = {
                         // exclude: /node_modules/, // 排除 node_modules 中的 js 文件
                         include: path.resolve(__dirname, "../src"),
                         loader: "babel-loader",
-                        // options: {
-                        //     presets: ["@babel/preset-env"]
-                        // }
+                        options: {
+                            cacheDirectory: true, //开启 babel 缓存
+                            cacheCompression: false //关闭保存文件压缩
+                            //     presets: ["@babel/preset-env"]
+                        }
                     }
                 ]
             }
@@ -80,6 +82,8 @@ module.exports = {
         new ESLintPlugin({
             //检查文件
             context: path.resolve(__dirname, "../src"),
+            cache: true,
+            cacheLocation: path.resolve(__dirname, "../node_modules/.cache/eslintcache"),
             exclude: "node_modules" //默认值
         }),
         new HtmlWebpackPlugin({
