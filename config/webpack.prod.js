@@ -36,7 +36,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, '../dist'),//绝对路径
         //入口文件打包输出文件名
-        filename: 'static/js/main.js',
+        filename: 'static/js/[name].js',
         clean: true //自动清理 path 目录后再进行打包
     },
     module: {
@@ -126,7 +126,7 @@ module.exports = {
             template: path.resolve(__dirname, '../public/index.html')
         }),
         new MiniCssExtractPlugin({
-            filename: "static/css/main.css"
+            filename: "static/css/[name].css"
         }),
     ],
     optimization: {
@@ -137,6 +137,9 @@ module.exports = {
             new CssMinimizerPlugin(),// css 文件压缩
             new TerserPlugin()
         ],
+        splitChunks: {
+            chunks: "all"
+        }
     },
     mode: 'production',
     devtool: 'source-map'
