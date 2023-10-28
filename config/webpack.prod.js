@@ -90,13 +90,18 @@ module.exports = {
                         // exclude: /node_modules/, // 排除 node_modules 中的 js 文件
                         include: path.resolve(__dirname, "../src"),
                         use: [
+                            // {
+                            //     loader: "thread-loader",
+                            //     options: {
+                            //         workers: threads
+                            //     }
+                            // },
                             {
-                                loader: "thread-loader",
+                                loader: path.resolve(__dirname, "../loaders/banner/banner-loader.js"),
                                 options: {
-                                    workers: threads
+                                    author: 'wy'
                                 }
                             },
-
                             {
                                 loader: path.resolve(__dirname, "../loaders/raw-loader.js")
                             },
