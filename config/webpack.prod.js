@@ -97,6 +97,9 @@ module.exports = {
                                 }
                             },
                             {
+                                loader: path.resolve(__dirname, "../loaders/raw-loader.js")
+                            },
+                            {
                                 loader: path.resolve(__dirname, "../loaders/sync-loader.js")
                             },
                             {
