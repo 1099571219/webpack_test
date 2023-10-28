@@ -97,10 +97,10 @@ module.exports = {
                                 }
                             },
                             {
-                                loader: path.resolve(__dirname, "../loaders/test-loader.js")
+                                loader: path.resolve(__dirname, "../loaders/sync-loader.js")
                             },
                             {
-                                loader: path.resolve(__dirname, "../loaders/test-loader2.js")
+                                loader: path.resolve(__dirname, "../loaders/async-loader.js")
                             },
                             {
                                 loader: "babel-loader",
