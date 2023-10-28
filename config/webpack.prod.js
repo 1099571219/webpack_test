@@ -36,9 +36,9 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, '../dist'),//绝对路径
         //入口文件打包输出文件名
-        filename: 'static/js/[name].[contenthash:8].js',
+        filename: 'static/js/[name].[contenthash:10].js',
         //打包输出的动态文件命名
-        chunkFilename: 'static/js/[name].[contenthash:8].js',
+        chunkFilename: 'static/js/[name].[contenthash:10].js',
         clean: true //自动清理 path 目录后再进行打包
     },
     module: {
@@ -97,6 +97,12 @@ module.exports = {
                                 }
                             },
                             {
+                                loader: path.resolve(__dirname, "../loaders/test-loader.js")
+                            },
+                            {
+                                loader: path.resolve(__dirname, "../loaders/test-loader2.js")
+                            },
+                            {
                                 loader: "babel-loader",
                                 options: {
                                     cacheDirectory: true, //开启 babel 缓存
@@ -128,7 +134,7 @@ module.exports = {
             template: path.resolve(__dirname, '../public/index.html')
         }),
         new MiniCssExtractPlugin({
-            filename: "static/css/[name].[contenthash].css"
+            filename: "static/css/[name].[contenthash:10].css"
         }),
     ],
     optimization: {
@@ -148,11 +154,11 @@ module.exports = {
                 }
             }
         },
-        runtimeChunk: {
-            name: (entrypoint) => {
-                return `runtime=${entrypoint.name}.js`
-            }
-        }
+        // runtimeChunk: {
+        //     name: (entrypoint) => {
+        //         return `runtime=${entrypoint.name}.js`
+        //     }
+        // }
     },
     mode: 'production',
     devtool: 'source-map'

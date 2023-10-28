@@ -5,6 +5,9 @@ import './css/index.sass'
 import './css/index.scss'
 import './css/index.less'
 const env = import.meta.url //--fix
-// console.log(env)
 console.log(add(1, 2))
-console.log(math.mul(2, 5))
+const abc = '12345678asdasd'
+const bbc = 'lasjkdklasjd'
+console.log(abc)
+console.log(math.add(1, 4))
+console.log(math.add(2, 5))
