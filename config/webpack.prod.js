@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ESLintPlugin = require('eslint-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const TestPlugin = require('../plugins/test-plugin');
 const getStyleLoader = (pre) => {
     return [
         //执行顺序，从右到左（从下到上）
@@ -148,6 +149,7 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: "static/css/[name].[contenthash:10].css"
         }),
+        new TestPlugin()
     ],
     optimization: {
         minimize: true,
