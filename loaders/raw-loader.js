@@ -1,4 +1,5 @@
 module.exports = function (context) {
+    console.log('raw-loader-context');
     console.log(context);
     return context
 }

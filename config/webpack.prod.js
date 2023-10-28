@@ -96,6 +96,7 @@ module.exports = {
                                     workers: threads
                                 }
                             },
+
                             {
                                 loader: path.resolve(__dirname, "../loaders/raw-loader.js")
                             },
@@ -113,7 +114,10 @@ module.exports = {
                                     plugins: ["@babel/plugin-transform-runtime"]
                                     //     presets: ["@babel/preset-env"]
                                 }
-                            }
+                            },
+                            {
+                                loader: path.resolve(__dirname, "../loaders/clean-log.loader.js")
+                            },
                         ]
                     }
                 ]
