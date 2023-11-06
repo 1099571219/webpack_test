@@ -6,6 +6,7 @@ const ESLintPlugin = require('eslint-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TestPlugin = require('../plugins/test-plugin');
+const BannerPlugin = require('../plugins/banner-plugin');
 const getStyleLoader = (pre) => {
     return [
         //执行顺序，从右到左（从下到上）
@@ -100,7 +101,7 @@ module.exports = {
                             {
                                 loader: path.resolve(__dirname, "../loaders/banner/banner-loader.js"),
                                 options: {
-                                    author: 'wy'
+                                    author: 'z.k.loader'
                                 }
                             },
                             {
@@ -149,15 +150,16 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: "static/css/[name].[contenthash:10].css"
         }),
-        new TestPlugin()
+        new TestPlugin(),
+        new BannerPlugin({ author: 'z.k.plugin' }),
     ],
     optimization: {
         minimize: true,
         minimizer: [
             // 在 webpack@5 中，你可以使用 `...` 语法来扩展现有的 minimizer（即 `terser-webpack-plugin`），将下一行取消注释
             // `...`,
-            new CssMinimizerPlugin(),// css 文件压缩
-            new TerserPlugin()
+            // new CssMinimizerPlugin(),// css 文件压缩
+            // new TerserPlugin()
         ],
         splitChunks: {
             chunks: "all",

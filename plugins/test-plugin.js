@@ -21,14 +21,14 @@ class TestPlugin {
             setTimeout(() => {
                 console.log('TestPlugin ______________ emit 222');
                 callback()
-            }, 2000)
+            }, 100)
         });
         compiler.hooks.emit.tapPromise('TestPlugin', (compilation) => {
             return new Promise(resolve => {
                 setTimeout(() => {
                     console.log('TestPlugin ______________ emit 333');
                     resolve()
-                }, 1000)
+                }, 100)
             })
         });
         //文档说明： make 是异步并行钩子，谁先返回结果就处理谁
@@ -41,14 +41,14 @@ class TestPlugin {
             setTimeout(() => {
                 console.log('TestPlugin ______________ make 444');
                 callback()
-            }, 3000)
+            }, 500)
         });
         compiler.hooks.make.tapPromise('TestPlugin', (compilation) => {
             return new Promise(resolve => {
                 setTimeout(() => {
                     console.log('TestPlugin ______________ make 555');
                     resolve()
-                }, 1000)
+                }, 100)
             })
         });
     }
