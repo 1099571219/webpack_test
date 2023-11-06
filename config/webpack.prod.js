@@ -7,7 +7,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TestPlugin = require('../plugins/test-plugin');
 const BannerPlugin = require('../plugins/banner-plugin');
-const cleanWebpackPlugin = require('../plugins/clean-webpack-plugin');
+const CleanWebpackPlugin = require('../plugins/clean-webpack-plugin');
+const AnalyzeWebpackPlugin = require('../plugins/analyze-webpack-plugin');
 const getStyleLoader = (pre) => {
     return [
         //执行顺序，从右到左（从下到上）
@@ -153,7 +154,8 @@ module.exports = {
         }),
         new TestPlugin(),
         new BannerPlugin({ author: 'z.k.plugin' }),
-        new cleanWebpackPlugin()
+        new CleanWebpackPlugin(),
+        new AnalyzeWebpackPlugin()
     ],
     optimization: {
         minimize: true,

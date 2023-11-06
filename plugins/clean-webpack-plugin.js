@@ -1,4 +1,4 @@
-module.exports = class cleanWebpackPlugin {
+module.exports = class CleanWebpackPlugin {
 
 
     constructor() { }
