@@ -41,7 +41,7 @@ class TestPlugin {
             setTimeout(() => {
                 console.log('TestPlugin ______________ make 444');
                 callback()
-            }, 500)
+            }, 100)
         });
         compiler.hooks.make.tapPromise('TestPlugin', (compilation) => {
             return new Promise(resolve => {

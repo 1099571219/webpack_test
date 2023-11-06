@@ -7,6 +7,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TestPlugin = require('../plugins/test-plugin');
 const BannerPlugin = require('../plugins/banner-plugin');
+const cleanWebpackPlugin = require('../plugins/clean-webpack-plugin');
 const getStyleLoader = (pre) => {
     return [
         //执行顺序，从右到左（从下到上）
@@ -41,7 +42,7 @@ module.exports = {
         filename: 'static/js/[name].[contenthash:10].js',
         //打包输出的动态文件命名
         chunkFilename: 'static/js/[name].[contenthash:10].js',
-        clean: true //自动清理 path 目录后再进行打包
+        // clean: true //自动清理 path 目录后再进行打包
     },
     module: {
         rules: [
@@ -152,6 +153,7 @@ module.exports = {
         }),
         new TestPlugin(),
         new BannerPlugin({ author: 'z.k.plugin' }),
+        new cleanWebpackPlugin()
     ],
     optimization: {
         minimize: true,
